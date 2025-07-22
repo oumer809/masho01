@@ -6,7 +6,7 @@ const router = express.Router()
 // get all
 router.get('/', async (req,res) => {
     try {
-        const books = await Book.find({})
+        const books = await Book.find({}).sort({createdAt: -1})
         if(!books){
             res.status(404).json({msg:'books not found!'})
         }
@@ -33,7 +33,7 @@ router.get('/:id', async (req,res) => {
 router.post('/', async (req,res) => {
     const {title,price, description, image,author}=req.body;
     try {
-        const newBook = new Book.create({price,title,description,image,author})
+        const newBook = new Book({price: parseFloat(price),title,description,image,author})
         await newBook.save();
         res.status(201).json(newBook)
     } catch (error) {
