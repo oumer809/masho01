@@ -1,41 +1,49 @@
-import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const userData = { email, password };
+  const [error, setError] = useState(""); 
+  const navigate = useNavigate()// For displaying error messages
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post(
-        "https://reimagined-space-meme-7vw5v94gw4wjhrvwv-5555.app.github.dev/users",
-        userData
-      ); // Changed to POST
-      if (res.status === 201) {
-        console.log("user login successfully!"); // Clear the form setTitle('');
+    setError(""); // Clear previous errors
 
-        setEmail("");
-        setPassword("");
+    try {
+      // Assuming a login endpoint like /login
+      const response = await axios.post(
+        "https://reimagined-space-meme-7vw5v94gw4wjhrvwv-5555.app.github.dev/users/login",
+        { email, password }
+      );
+
+      // Assuming successful login returns a token or user data
+      if (response.status === 201) {
+        // Handle successful login (e.g., store token, redirect
+        console.log("Login successful:", response.data); 
+        navigate('/')// Redirect to a protected route or update UI
       } else {
-        console.log("Failed to login. Please try again.");
-        console.log("Invalid data or server error");
+        setError("Invalid credentials. Please try again.");
+        console.log(response.data)
       }
     } catch (error) {
-      console.log("An error occurred while registering.");
-      console.error(
-        "Error registering user:",
-        error.response?.data?.message || error.message
+      console.error("Login error:", error);
+      setError(
+        error.response?.data?.message ||
+          "An error occurred during login. Please try again."
       );
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="bg-white text-gray-500 w-full max-w-[340px] mx-4 md:p-6 p-4 py-8 text-left text-sm rounded-lg shadow-[0px_0px_10px_0px] shadow-black/10">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white text-gray-500 w-full max-w-[340px] mx-4 md:p-6 p-4 py-8 text-left text-sm rounded-lg shadow-[0px_0px_10px_0px] shadow-black/10"
+    >
       <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
         Login
       </h2>
+      <div>{error && <p style={{ color: "red" }}>{error}</p>}</div>
 
       <input
         value={email}

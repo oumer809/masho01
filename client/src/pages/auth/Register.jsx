@@ -1,23 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const userData = { name, email, password };
+ const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if(email){
-        await axios.get("https://reimagined-space-meme-7vw5v94gw4wjhrvwv-5555.app.github.dev/users")
-      }
+       const userData = { name, email, password };
       const res = await axios.post(
-        "https://reimagined-space-meme-7vw5v94gw4wjhrvwv-5555.app.github.dev/users",
+        "https://reimagined-space-meme-7vw5v94gw4wjhrvwv-5555.app.github.dev/users/register",
         userData
       ); // Changed to POST
       if (res.status === 201) {
         console.log("user register successfully!"); // Clear the form setTitle('');
+         navigate('/auth/login')
         setName("");
         setEmail("");
         setPassword("");

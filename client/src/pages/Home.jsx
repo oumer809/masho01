@@ -12,7 +12,7 @@ const Home = () => {
       try {
         setLoading(true);
         const res = await axios.get(
-          "https://reimagined-space-meme-7vw5v94gw4wjhrvwv-5555.app.github.dev/books"
+          "https://reimagined-space-meme-7vw5v94gw4wjhrvwv-5555.app.github.dev/books", {withCredentials: true}
         );
         if (res.status !== 201) {
           console.log("Books not found");

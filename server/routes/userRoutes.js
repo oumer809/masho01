@@ -8,10 +8,11 @@ const router = express.Router();
 dotenv.config();
 //register
 
-router.post("/", async (req, res) => {
-  const { name, email, password } = req.body;
+router.post("/register", async (req, res) => {
+ 
   let token;
   try {
+     const { name, email, password } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ msg: "user already exists!" });
@@ -34,7 +35,7 @@ router.post("/", async (req, res) => {
 
 //login
 
-router.post("/", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -58,4 +59,31 @@ router.post("/", async (req, res) => {
   }
 });
 
+//get users
+
+router.get('/', async (req, res) => {
+  try {
+    const users = await User.find({})
+    if(!users){
+      return res.status(404).json({msg: 'users not found!'})
+    }
+    res.status(201).json(users)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+//get users
+
+router.get('/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+    if(!user){
+      return res.status(404).json({msg: 'user not found!'})
+    }
+    res.status(201).json(user)
+  } catch (error) {
+    console.log(error)
+  }
+})
 export default router;

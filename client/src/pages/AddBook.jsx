@@ -33,7 +33,7 @@ const AddBook = () => {
     try {
       const res = await axios.post(
         "https://reimagined-space-meme-7vw5v94gw4wjhrvwv-5555.app.github.dev/books",
-        bookData
+        bookData,
       ); // Changed to POST
       if (res.status === 201) {
         console.log("Book added successfully!"); // Clear the form setTitle('');
