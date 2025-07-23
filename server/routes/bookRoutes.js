@@ -1,5 +1,6 @@
 import express from "express"
 import Book from "../models/Book.js"
+import { protect } from "../middleWare/authMiddleware.js"
 
 const router = express.Router() 
 
@@ -30,7 +31,7 @@ router.get('/:id', async (req,res) => {
     }
 })
 // post book
-router.post('/', async (req,res) => {
+router.post('/',protect, async (req,res) => {
     const {title,price, description, image,author}=req.body;
     try {
         const newBook = new Book({price: parseFloat(price),title,description,image,author})

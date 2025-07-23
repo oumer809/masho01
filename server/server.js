@@ -5,6 +5,7 @@ import colors from "colors";
 import connectDB from "./config/db.js";
 import bookRoutes from "./routes/bookRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import { errorHandler, notFound } from "./middleWare/errorMiddleware.js";
 
 dotenv.config();
 
@@ -25,6 +26,9 @@ app.use((req, res, next) => {
 
 
 app.use(express.json());
+// app.use(notFound)
+// app.use(errorHandler)
+
 
 connectDB();
 app.use("/books", bookRoutes);
